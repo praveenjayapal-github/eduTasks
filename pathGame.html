@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f4f4;
+        }
+
+        .controls {
+            margin: 10px;
+        }
+
+        svg {
+            background: white;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+
+        .circle {
+            fill: white;
+            stroke-width: 3;
+        }
+
+        .text {
+            font-size: 18px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .op {
+            font-size: 18px;
+            fill: #333;
+        }
+
+        .path-line {
+            fill: none;
+            stroke: #bbb;
+            stroke-width: 2;
+            stroke-dasharray: 6, 6;
+            marker-end: url(#arrow);
+            /* ✅ arrow */
+        }
+
+        @media print {
+            .controls {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" width="100%"><tr><td>Name:</td><td>Date:</td></tr></table>
+    <h3>Math Path Generator</h3>
+
+    <div class="controls">
+        Circles: <input type="number" id="count" value="20" min="2">
+        Max Value: <input type="number" id="maxVal" value="10" min="1">
+        <button onclick="generateAll()">Generate</button>
+        <button onclick="window.print()">Print</button>
+    </div>
+
+    <svg id="block1" width="900" height="500"></svg>
+    <br>
+    <br>
+    <svg id="block2" width="900" height="500"></svg>
+
+    <script>
+
+        function getRandomColor() {
+            // ✅ nice predefined palette (avoids ugly colors)
+            const colors = [
+                "#e74c3c", "#3498db", "#2ecc71",
+                "#f39c12", "#9b59b6", "#16a085"
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function generate(docId) {
+
+            const svg = document.getElementById(docId);
+            svg.innerHTML = "";
+
+            const count = +document.getElementById("count").value;
+            const maxVal = +document.getElementById("maxVal").value;
+
+            let nodes = [];
+            let operators = [];
+            let nodeAnswer = [];
+
+            const cols = 8;
+            const spacingX = 110;
+            const spacingY = 90;
+            const startX = 60;
+            const startY = 60;
+            let startValue = Math.floor(Math.random() * maxVal) + 1;
+            solution = startValue;
+
+            // ✅ define arrow marker (once per render)
+            const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+
+            const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+            marker.setAttribute("id", "arrow");
+            marker.setAttribute("markerWidth", "10");
+            marker.setAttribute("markerHeight", "10");
+            marker.setAttribute("refX", "8");
+            marker.setAttribute("refY", "3");
+            marker.setAttribute("orient", "auto");
+
+            //   solution.style.display = "none";
+            const arrowPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            arrowPath.setAttribute("d", "M0,0 L0,8 L12,4 z");
+            arrowPath.setAttribute("fill", "#333");
+
+            marker.appendChild(arrowPath);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+
+            // ✅ create snake layout
+            for (let i = 0; i < count; i++) {
+
+                let row = Math.floor(i / cols);
+                let col = i % cols;
+
+                let x = startX + col * spacingX;
+                let y = startY + row * spacingY;
+
+                if (row % 2 === 1) {
+                    x = startX + (cols - 1 - col) * spacingX;
+                }
+
+                nodes.push({ x, y });
+
+                if (i > 0) {
+                    let sign;;
+                    let num;;
+                    let result;
+                    do {
+                        sign = Math.random() > 0.5 ? "+" : "-";
+                        num = Math.floor(Math.random() * maxVal) + 1;
+
+                        result = solution + (sign === "+" ? num : -num);
+
+                    } while (result < 0);
+
+                    solution = solution + parseInt(sign + num);
+                    nodeAnswer.push(solution);
+                    operators.push(sign + num);
+                }
+            }
+
+            // ✅ CURVED PATH WITH ARROWS
+            let d = `M ${nodes[0].x} ${nodes[0].y}`;
+
+            for (let i = 1; i < nodes.length; i++) {
+                let prev = nodes[i - 1];
+                let curr = nodes[i];
+
+                let cx = (prev.x + curr.x) / 2;
+                let cy = (prev.y + curr.y) / 2;
+
+                d += ` Q ${cx} ${cy}, ${curr.x} ${curr.y}`;
+            }
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", d);
+            path.setAttribute("class", "path-line");
+
+            svg.appendChild(path);
+
+            // ✅ operators
+            for (let i = 0; i < nodes.length - 1; i++) {
+                let a = nodes[i];
+                let b = nodes[i + 1];
+
+                let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", (a.x + b.x) / 2);
+                text.setAttribute("y", (a.y + b.y) / 2 - 8);
+                text.setAttribute("class", "op");
+                text.textContent = operators[i];
+                svg.appendChild(text);
+            }
+
+            // ✅ circles with RANDOM COLORS
+            nodes.forEach((node, index) => {
+
+                let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", node.x);
+                circle.setAttribute("cy", node.y);
+                circle.setAttribute("r", 20);
+                circle.setAttribute("class", "circle");
+
+                // ✅ random border color
+                circle.setAttribute("stroke", getRandomColor());
+
+                svg.appendChild(circle);
+
+                // starting number
+                if (index === 0) {
+
+                    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", node.x);
+                    text.setAttribute("y", node.y);
+                    text.setAttribute("class", "text");
+                    text.textContent = startValue;
+
+                    svg.appendChild(text);
+                } else {
+
+                    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", node.x);
+                    text.setAttribute("y", node.y);
+                    text.setAttribute("class", "text");
+
+                    if ((index%9) && (Math.round(Math.random()))) {
+                        text.textContent = nodeAnswer[index - 1];
+                    }
+
+                    svg.appendChild(text);
+                }
+
+            });
+        }
+        
+        function generateAll() {
+            generate("block1");
+            generate("block2");
+        }
+
+        // initial load
+        generateAll();
+    </script>
+
+</body>
+
+</html>
