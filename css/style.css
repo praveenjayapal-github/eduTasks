@@ -1,0 +1,15 @@
+body {
+    font-family: Arial;
+    text-align: center;
+}
+
+#worksheet {
+    margin-top: 20px;
+    padding: 20px;
+    border: 2px dashed #444;
+}
+
+p {
+    font-size: 24px;
+    letter-spacing: 5px;
+}
