@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Arithmetic Worksheet</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f4f4;
+        }
+
+        .controls {
+            margin: 10px;
+            padding: 16px 0;
+        }
+
+        .controls input[type="number"] {
+            padding: 6px 10px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 70px;
+            margin: 0 8px 0 2px;
+            background: #fff;
+            transition: border-color 0.2s;
+        }
+
+        .controls input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .controls button {
+            padding: 7px 18px;
+            margin-left: 8px;
+            font-size: 16px;
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(52, 152, 219, 0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .controls button:hover {
+            background: linear-gradient(90deg, #2980b9 60%, #27ae60 100%);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+        }
+
+        table.worksheet {
+            margin: 30px auto 0 auto;
+            border-collapse: collapse;
+            background: #fff;
+            /* box-shadow: 0 2px 8px rgba(0,0,0,0.04); */
+        }
+
+        table.worksheet td {
+            border: 0px solid #bbb;
+            width: 120px;
+            height: 120px;
+            font-size: 24px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 0;
+        }
+
+        .arith-problem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            font-family: inherit;
+        }
+
+        .arith-top {
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+
+        .arith-op {
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+
+        .arith-bottom {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .arith-line {
+            border-bottom: 2.5px solid #222;
+            width: 60px;
+            margin: 0 0 24px 0;
+            height: 0;
+        }
+
+        @media print {
+            .controls {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" width="100%">
+        <tr>
+            <td>Name:</td>
+            <td>Date:</td>
+        </tr>
+    </table>
+    <h3 id="worksheet-title">Arithmetic Worksheet</h3>
+    <div class="controls">
+        Operator:
+        <select id="operatorMode">
+            <option value=""></option>
+            <option value="+">Addition</option>
+            <option value="-">Subtraction</option>
+            <option value="*">Multiplication</option>
+            <option value="/">Division</option>
+        </select>
+        Max Number: <input type="number" id="maxVal" value="10" min="1">
+        Max Result: <input type="number" id="maxSummation" value="25" min="1">
+        <button onclick="generateWorksheet()">Generate</button>
+        <button onclick="window.print()">Print</button>
+    </div>
+    <div id="worksheet"></div>
+    <script>
+        function generateWorksheet() {
+            const maxVal = +document.getElementById('maxVal').value;
+            const maxSummation = +document.getElementById('maxSummation').value;
+            const op = document.getElementById('operatorMode').value;
+            let html = '<table class="worksheet">';
+            for (let row = 0; row < 7; row++) {
+                html += '<tr>';
+                for (let col = 0; col < 6; col++) {
+                    let a, b, result;
+                    do {
+                        a = Math.floor(Math.random() * maxVal) + 1;
+                        b = Math.floor(Math.random() * maxVal) + 1;
+                        result = eval(`${a} ${op} ${b}`);
+                    } while (
+                        result < 0 || result > maxSummation ||
+                        (op === '-' && a < b)
+                    );
+                    html += `<td><div class="arith-problem">
+                <div class="arith-top">${a}</div>
+                <div class="arith-op">${op} ${b}</div>
+                <div class="arith-line"></div>
+            </div></td>`;
+                }
+                html += '</tr>';
+            }
+            html += '</table>';
+            document.getElementById('worksheet').innerHTML = html;
+        }
+        // Initial worksheet
+        function updateWorksheetTitle(mode) {
+            const title = document.getElementById('worksheet-title');
+            if (mode === '+') {
+                title.textContent = 'Addition Worksheet';
+            } else if (mode === '-') {
+                title.textContent = 'Subtraction Worksheet';
+            } else if (mode === '*') {
+                title.textContent = 'Multiplication Worksheet';
+            } else if (mode === '/') {
+                title.textContent = 'Division Worksheet';
+            } else {
+                title.textContent = 'Arithmetic Worksheet';
+            }
+        }
+
+        // Update title on operator change
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('operatorMode').addEventListener('change', function () {
+                updateWorksheetTitle(document.getElementById('operatorMode').value);
+            });
+        });
+
+        // Initial worksheet
+        generateWorksheet();
+
+    </script>
+</body>
+
+</html>
