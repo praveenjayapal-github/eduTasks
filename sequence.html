@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Before & After Number Worksheet</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        .controls {
+            margin: 10px;
+            padding: 16px 0;
+        }
+        .controls input[type="number"] {
+            padding: 6px 10px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 70px;
+            margin: 0 8px 0 2px;
+            background: #fff;
+            transition: border-color 0.2s;
+        }
+        .controls input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .controls button {
+            padding: 7px 18px;
+            margin-left: 8px;
+            font-size: 16px;
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(52, 152, 219, 0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .controls button:hover {
+            background: linear-gradient(90deg, #2980b9 60%, #27ae60 100%);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+        }
+        .worksheet-table {
+            margin: 30px auto 0 auto;
+            background: #fff;
+            border-collapse: separate;
+            border-spacing: 40px 0;
+        }
+        .task-row {
+            height: 90px;
+        }
+        .np-task {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            justify-content: center;
+            width: 340px;
+            margin: 0 auto;
+        }
+        .np-number {
+            font-size: 34px;
+            font-weight: bold;
+            width: 60px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .np-line {
+            border-bottom: 2.5px dotted #222;
+            width: 60px;
+            margin: 0 0 0 0;
+            height: 0;
+            display: block;
+        }
+            border-bottom: 3.5px solid #222;
+            width: 80px;
+            margin: 0 0 0 0;
+            height: 0;
+            display: block;
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; }
+            .worksheet-table { border-spacing: 20px 0; }
+        }
+    </style>
+</head>
+<body>
+    <table border="0" width="100%">
+        <tr>
+            <td>Name:</td>
+            <td>Date:</td>
+        </tr>
+    </table>
+    <h3>Before & After Number Worksheet</h3>
+    <div class="controls">
+        Max Number: <input type="number" id="maxVal" value="50" min="2">
+        <button onclick="generateWorksheet()">Generate</button>
+        <button onclick="window.print()">Print</button>
+    </div>
+    <div id="worksheet"></div>
+    <script>
+    // Initial worksheet
+        function getRandomColor() {
+            const colors = [
+                "#e74c3c", "#3498db", "#2ecc71",
+                "#f39c12", "#9b59b6", "#16a085",
+                "#e67e22", "#1abc9c", "#8e44ad", "#2c3e50"
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function generateWorksheet() {
+            const maxVal = +document.getElementById('maxVal').value;
+            let html = '<table class="worksheet-table">';
+            // Prepare 24 random numbers (3 columns x 8 rows)
+            let numbers = [];
+            for (let i = 0; i < 46; i++) {
+                numbers.push(Math.floor(Math.random() * (maxVal - 2)) + 2); // n-1 >= 1, n+1 <= maxVal
+            }
+            for (let row = 0; row < 14; row++) {
+                html += '<tr class="task-row">';
+                for (let col = 0; col < 3; col++) {
+                    let n = numbers[row + col * 8];
+                    let color = getRandomColor();
+                    html += `<td>
+                        <div class="np-task">
+                            <div>
+                                <div class="np-line"></div>
+                            </div>
+                            <div>
+                                <div class="np-number" style="color:${color}">${n}</div>
+                            </div>
+                            <div>
+                                <div class="np-line"></div>
+                            </div>
+                        </div>
+                    </td>`;
+                }
+                html += '</tr>';
+            }
+            html += '</table>';
+            document.getElementById('worksheet').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
