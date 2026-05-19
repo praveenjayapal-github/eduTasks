@@ -1,27 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worksheet Generator</title>
+    <!-- Main stylesheet for worksheet generator -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eduTasks - Worksheet Generator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Banner styles */
+        .banner {
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            padding: 32px 0 18px 0;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 8px rgba(52,152,219,0.08);
+        }
+        /* Navigation menu styles */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            background: #f4f4f4;
+            border-bottom: 2px solid #3498db;
+            margin-bottom: 32px;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 16px 32px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            background: #3498db;
+            color: #fff;
+        }
+        .landing-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 24px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(52,152,219,0.08);
+            text-align: center;
+        }
+        .landing-content h2 {
+            color: #3498db;
+            margin-bottom: 16px;
+        }
+        .landing-content ul {
+            text-align: left;
+            display: inline-block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner -->
+    <div class="banner">eduTasks Worksheet Generator</div>
 
-<h1>Worksheet Generator</h1>
+    <!-- Horizontal Navigation Menu -->
+    <nav class="nav-menu">
+        <a href="index.html" class="active">Home</a>
+        <a href="arithmetic.html">Arithmetic Worksheet</a>
+        <a href="sequence.html">Before & After Numbers</a>
+        <a href="pathGame.html">Number Path Game</a>
+        <a href="#" onclick="alert('Missing Letters is on Home page!');return false;">Missing Letters</a>
+    </nav>
 
-<select id="taskType">
-    <option value=""></option>
-    <option value="missingLetters">Missing Letters</option>
-</select>
+    <!-- Landing Page Content -->
+    <div class="landing-content">
+        <h2>Welcome to eduTasks!</h2>
+        <p>
+            Generate printable and interactive worksheets for students. Select a worksheet type from the menu above to get started.<br>
+            <strong>Features include:</strong>
+        </p>
+        <ul>
+            <li><b>Arithmetic Worksheet:</b> Practice addition, subtraction, multiplication, and division with customizable ranges.</li>
+            <li><b>Before & After Numbers:</b> Number sequencing and pattern recognition.</li>
+            <li><b>Number Path Game:</b> Visual math path with operations for engaging practice.</li>
+            <li><b>Missing Letters:</b> Spelling practice with randomly missing letters (see below).</li>
+        </ul>
+        <hr>
+        <h3>Try the Missing Letters Worksheet:</h3>
+        <label for="taskType">Select Task Type:</label>
+        <select id="taskType">
+            <option value="missingLetters">Missing Letters</option>
+        </select>
+        <button onclick="generateTask()">Generate Worksheet</button>
+        <div id="worksheet"></div>
+    </div>
 
-<button onclick="generateTask()">Generate Worksheet</button>
-
-<div id="worksheet"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="js/data.js"></script>
-<script src="js/generator.js"></script>
-<script src="js/app.js"></script>
-
-<canvas id="gameCanvas" width="800" height="600"></canvas>
-
+    <!-- JavaScript dependencies and logic for Missing Letters -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,8 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Before & After Number Worksheet</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
+        .banner {
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            padding: 32px 0 18px 0;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 8px rgba(52,152,219,0.08);
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            background: #f4f4f4;
+            border-bottom: 2px solid #3498db;
+            margin-bottom: 32px;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 16px 32px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            background: #3498db;
+            color: #fff;
+        }
+        /* ...existing code... */
         body {
             font-family: Arial;
             text-align: center;
@@ -73,12 +107,6 @@
             height: 0;
             display: block;
         }
-            border-bottom: 3.5px solid #222;
-            width: 80px;
-            margin: 0 0 0 0;
-            height: 0;
-            display: block;
-        }
         @media print {
             .controls { display: none; }
             body { background: white; }
@@ -87,6 +115,17 @@
     </style>
 </head>
 <body>
+    <!-- Banner -->
+    <div class="banner">eduTasks Worksheet Generator</div>
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="arithmetic.html">Arithmetic Worksheet</a>
+        <a href="sequence.html" class="active">Before & After Numbers</a>
+        <a href="pathGame.html">Number Path Game</a>
+        <a href="#" onclick="alert('Missing Letters is on Home page!');return false;">Missing Letters</a>
+    </nav>
+    <!-- ...existing code... -->
     <table border="0" width="100%">
         <tr>
             <td>Name:</td>
@@ -110,7 +149,6 @@
             ];
             return colors[Math.floor(Math.random() * colors.length)];
         }
-
         function generateWorksheet() {
             const maxVal = +document.getElementById('maxVal').value;
             let html = '<table class="worksheet-table">';

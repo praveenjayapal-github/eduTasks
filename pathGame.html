@@ -1,19 +1,51 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Path Worksheet</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
+        .banner {
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            padding: 32px 0 18px 0;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 8px rgba(52,152,219,0.08);
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            background: #f4f4f4;
+            border-bottom: 2px solid #3498db;
+            margin-bottom: 32px;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 16px 32px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            background: #3498db;
+            color: #fff;
+        }
+        /* ...existing code... */
         body {
             font-family: Arial;
             text-align: center;
             background: #f4f4f4;
         }
-
         .controls {
             margin: 10px;
             padding: 16px 0;
         }
-
         .controls input[type="number"] {
             padding: 6px 10px;
             border: 1px solid #bbb;
@@ -24,12 +56,10 @@
             background: #fff;
             transition: border-color 0.2s;
         }
-
         .controls input[type="number"]:focus {
             border-color: #3498db;
             outline: none;
         }
-
         .controls button {
             padding: 7px 18px;
             margin-left: 8px;
@@ -42,12 +72,10 @@
             box-shadow: 0 2px 6px rgba(52,152,219,0.08);
             transition: background 0.2s, box-shadow 0.2s;
         }
-
         .controls button:hover {
             background: linear-gradient(90deg, #2980b9 60%, #27ae60 100%);
             box-shadow: 0 4px 12px rgba(52,152,219,0.15);
         }
-
         svg {
             background: white;
             border: 1px solid #ccc;
@@ -55,48 +83,50 @@
             max-width: 100%;
             height: auto;
         }
-
         .circle {
             fill: white;
             stroke-width: 3;
         }
-
         .text {
             font-size: 18px;
             text-anchor: middle;
             dominant-baseline: middle;
         }
-
         .op {
             font-size: 18px;
             fill: #333;
         }
-
         .path-line {
             fill: none;
             stroke: #bbb;
             stroke-width: 2;
             stroke-dasharray: 6, 6;
             marker-end: url(#arrow);
-            /* ✅ arrow */
         }
-
         @media print {
             .controls {
                 display: none;
             }
-
             body {
                 background: white;
             }
         }
     </style>
 </head>
-
 <body>
+    <!-- Banner -->
+    <div class="banner">eduTasks Worksheet Generator</div>
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="arithmetic.html">Arithmetic Worksheet</a>
+        <a href="sequence.html">Before & After Numbers</a>
+        <a href="pathGame.html" class="active">Number Path Game</a>
+        <a href="#" onclick="alert('Missing Letters is on Home page!');return false;">Missing Letters</a>
+    </nav>
+    <!-- ...existing code... -->
     <table border="0" width="100%"><tr><td>Name:</td><td>Date:</td></tr></table>
     <h3>Number Path Worksheet</h3>
-
     <div class="controls">
         Circles: <input type="number" id="count" value="20" min="2">
         Max Number: <input type="number" id="maxVal" value="10" min="1">
@@ -104,14 +134,12 @@
         <button onclick="generateAll()">Generate</button>
         <button onclick="window.print()">Print</button>
     </div>
-
     <svg id="block1" width="850" height="450" aria-label="Math Path 1"></svg>
     <br>
     <br>
     <svg id="block2" width="850" height="450" aria-label="Math Path 2"></svg>
-
     <script>
-
+        // ...existing code...
         // Returns a random color from a nice palette
         function getRandomColor() {
             const colors = [
@@ -120,31 +148,25 @@
             ];
             return colors[Math.floor(Math.random() * colors.length)];
         }
-
         function generate(docId) {
             // Main generator for a math path SVG
             const svg = document.getElementById(docId);
             svg.innerHTML = "";
-
             // Cap max count for performance
             const count = Math.min(+document.getElementById("count").value, 40);
             const maxVal = +document.getElementById("maxVal").value;
             const maxSummation = +document.getElementById("maxSummation").value;
             const randomeNodeIndex = Math.floor(Math.random() * Math.min(maxVal, 7)) + 1;            
-
             const nodes = [];
             const operators = [];
             const nodeAnswer = [];
-
             const cols = 8;
-            
             const spacingX = 90;
             const spacingY = 90;
             const startX = 60;
             const startY = 60;
             const startValue = Math.floor(Math.random() * maxVal) + 1;
             let solution = startValue;            
-
             // Define arrow marker (once per render)
             const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
             const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
@@ -160,7 +182,6 @@
             marker.appendChild(arrowPath);
             defs.appendChild(marker);
             svg.appendChild(defs);
-
             // Create snake layout
             for (let i = 0; i < count; i++) {
                 const row = Math.floor(i / cols);
@@ -180,14 +201,11 @@
                         num = Math.floor(Math.random() * maxVal) + 1;
                         result = solution + (sign === "+" ? num : -num);
                     } while (result < 0 || result > maxSummation);
-
-                    // solution = solution + (sign === "+" ? num : -num);
                     solution = result;
                     nodeAnswer.push(solution);
                     operators.push(sign + num);
                 }
             }
-
             // Draw curved path with arrows
             let d = `M ${nodes[0].x} ${nodes[0].y}`;
             for (let i = 1; i < nodes.length; i++) {
@@ -201,8 +219,6 @@
             path.setAttribute("d", d);
             path.setAttribute("class", "path-line");
             svg.appendChild(path);
-
-
             // Draw operators
             for (let i = 0; i < nodes.length - 1; i++) {
                 const a = nodes[i];
@@ -214,8 +230,6 @@
                 text.textContent = operators[i];
                 svg.appendChild(text);
             }
-
-
             // Draw circles with random border colors and accessible titles
             nodes.forEach((node, index) => {
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -229,7 +243,6 @@
                 title.textContent = index === 0 ? `Start: ${startValue}` : `Step ${index}: ${nodeAnswer[index - 1] || ''}`;
                 circle.appendChild(title);
                 svg.appendChild(circle);
-
                 // starting number
                 // Show number for the first circle and the first circle in each row
                 let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -242,19 +255,14 @@
                     text.textContent = nodeAnswer[index - 1];
                 }
                 svg.appendChild(text);
-
             });
         }
-        
         function generateAll() {
             generate("block1");
             generate("block2");
         }
-
         // initial load
         generateAll();
     </script>
-
 </body>
-
 </html>
