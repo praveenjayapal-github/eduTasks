@@ -108,8 +108,16 @@
             display: block;
         }
         @media print {
-            .controls { display: none; }
             body { background: white; }
+            .banner,
+            .nav-menu,
+            .controls,
+            #worksheet-title {
+                display: none !important;
+            }
+            table[border] {
+                display: table !important;
+            }
             .worksheet-table { border-spacing: 20px 0; }
         }
     </style>

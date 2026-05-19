@@ -117,11 +117,23 @@
             height: 0;
         }
         @media print {
-            .controls {
-                display: none;
-            }
             body {
                 background: white;
+            }
+            .banner,
+            .nav-menu,
+            .controls,
+            #worksheet-title {
+                display: none !important;
+            }
+            #worksheet {
+                display: block !important;
+                margin: 0;
+                padding: 0;
+                border: none;
+            }
+            table[border] {
+                display: table !important;
             }
         }
     </style>

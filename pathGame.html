@@ -104,11 +104,17 @@
             marker-end: url(#arrow);
         }
         @media print {
-            .controls {
-                display: none;
-            }
             body {
                 background: white;
+            }
+            .banner,
+            .nav-menu,
+            .controls,
+            #worksheet-title {
+                display: none !important;
+            }
+            table[border] {
+                display: table !important;
             }
         }
     </style>
@@ -128,7 +134,7 @@
     <table border="0" width="100%"><tr><td>Name:</td><td>Date:</td></tr></table>
     <h3>Number Path Worksheet</h3>
     <div class="controls">
-        Circles: <input type="number" id="count" value="20" min="2">
+        Circles: <input type="number" id="count" value="36" min="2">
         Max Number: <input type="number" id="maxVal" value="10" min="1">
         Max Summation: <input type="number" id="maxSummation" value="25" min="1">
         <button onclick="generateAll()">Generate</button>
